@@ -1,8 +1,6 @@
 import { Controller, Sse } from '@nestjs/common';
-import { interval, Observable, of, Subject } from "rxjs";
-import { map } from "rxjs/operators";
-import { asksData, bidsData } from "./sort-coin/sort-coin.service";
-import { SortCoinService } from "./sort-coin/sort-coin.service";
+import { UpdateDataService } from "./update-data/update-data.service";
+import { Observable } from "rxjs";
 
 interface allData {
   name: string;
@@ -12,17 +10,12 @@ interface allData {
   type: string;
 }
 
-@Controller('hello')
+@Controller('coinData')
 export class AppController {
-  constructor(private sortCoinService: SortCoinService) {}
+  constructor(private updateDataService: UpdateDataService ) {}
 
   @Sse('sse')
-  sse(): Observable<allData[]> {
-    if(this.sortCoinService.allAsksArray.length && this.sortCoinService.allBidsArray.length > 0) {
-      const asksThickness = this.sortCoinService.allAsksArray;
-      const bidsThickness = this.sortCoinService.allBidsArray;
-      const allThickness = asksThickness.concat(bidsThickness);
-      return of(allThickness);
-    }
+  sse(): Observable<allData> {
+    return this.updateDataService.getDataUpdated();
   }
 }

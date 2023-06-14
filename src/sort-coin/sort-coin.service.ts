@@ -1,5 +1,6 @@
-import { Injectable, OnModuleInit } from "@nestjs/common";
-import { BinanceService } from "../app.service";
+import { Injectable } from "@nestjs/common";
+import { UpdateDataService } from "../update-data/update-data.service";
+import { DistributorService } from "../distributor/distributor.service";
 import { OnEvent } from "@nestjs/event-emitter";
 
 
@@ -21,11 +22,11 @@ export interface bidsData {
 @Injectable()
 export class SortCoinService{
 
-  constructor() {}
+  constructor(private updateDataService: UpdateDataService, private distributorService: DistributorService) {}
 
   public allBidsArray: bidsData[] = [];
   public allAsksArray: asksData[] = [];
-
+  public allThickness: asksData[] = [];
   @OnEvent('data.updated')
   handleUpdatedData(newData) {
 
@@ -134,6 +135,10 @@ export class SortCoinService{
       this.allBidsArray.push(bidsData);
 
     }
+    this.allThickness.length = 0;
+    this.allThickness = this.allAsksArray.concat(this.allBidsArray)
+    this.distributorService.writeData(this.allThickness);
+    this.updateDataService.updateData(this.allThickness)
   }
 }
 
