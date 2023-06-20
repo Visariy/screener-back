@@ -9,6 +9,7 @@ export interface asksData {
   amount: number;
   thickness: number;
   procent: number;
+  price: number;
   type: string
 }
 export interface bidsData {
@@ -16,6 +17,7 @@ export interface bidsData {
   amount: number;
   thickness: number;
   procent: number;
+  price: number;
   type: string;
 }
 
@@ -74,7 +76,6 @@ export class SortCoinService{
       let asksAndBids = infoArray[key]
 
       let asks = asksAndBids[0];
-      console.log(asks[0]);
       let firstAskPrice = asks[0][0]
 
       let bids = asksAndBids[1];
@@ -91,6 +92,8 @@ export class SortCoinService{
       let askAmount = Number(bestAsk[1]);
       askAmount = customFixed(askAmount, 0);
 
+      let askPrice = Number(bestAsk[0])
+
       let askThickness = maxAskPrice;
       askThickness = customFixed(askThickness, 0)
 
@@ -102,6 +105,7 @@ export class SortCoinService{
         thickness: askThickness,
         procent: askProcent,
         amount: askAmount,
+        price: askPrice,
         type: 'ask',
       }
 
@@ -119,16 +123,17 @@ export class SortCoinService{
       let bidThickness = maxBidPrice
       bidThickness = customFixed(bidThickness, 0);
 
-
-      let bidProcent = findProcent(firstBidPrice, bestAsk[0]);
+      let bidProcent = findProcent(firstBidPrice, bestBid[0]);
       bidProcent = customFixed(bidProcent, 3);
 
+      let bidPrice = Number(bestBid[0])
 
       let bidsData: bidsData = {
         name: coinName,
         thickness: bidThickness,
         procent: bidProcent,
         amount: bidAmount,
+        price: bidPrice,
         type: 'bid'
       }
 

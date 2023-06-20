@@ -55,12 +55,10 @@ export class BinanceService implements OnModuleInit {
             .pipe(map((response) => response.data))
             .toPromise();
           this.depths[symbol] = [response.asks, response.bids];
-          console.log('цикл');
         } catch (e) {
           console.log(e);
         }
       }
-      console.log(this.depths);
       this.updateData(this.depths);
     }, 100000)
   }

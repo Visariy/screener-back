@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Observable, startWith, Subject } from "rxjs";
-import { SortCoinService } from "../sort-coin/sort-coin.service";
+import { startWith, Subject } from "rxjs";
 import { DistributorService } from "../distributor/distributor.service";
 
 @Injectable()
